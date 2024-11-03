@@ -1,5 +1,5 @@
 // v2 works for linear
-tooth_height = 6;
+tooth_height = 8;
 tooth_width = 0.78;
 tooth_spacing = 1.2;
 
@@ -13,13 +13,15 @@ tooth_depth=0.76;
 length=25.4*1.5; //1.5inches
 
 $fn=60;
-module linear(height) {
+// This is merely a test-bed for the cylinder, but if you so choose, you can create a
+// variable length linear GT2 timing "pulley"
+module linear(height, length) {
     
     //translate([0,0,-0.2]) #cube([tooth_depth+20,tooth_depth,tooth_depth]);
     union() {
         difference() {
             translate([0,0,0])
-            cube([25.4*1.5,8,3]);
+            cube([length,8,3]);
             
             up=0;
             
@@ -96,11 +98,18 @@ module GT2_8mm(teeth) {
 
     tooth_width = 0.78;
     tooth_spacing = 1.2;
-    cylinder_with_teeth(R, 8, tooth_spacing, tooth_width);
+    
+    union() {
+        cylinder_with_teeth(R, 8, tooth_spacing, tooth_width);
+        
+        translate([0,0,-1.5]) cylinder(d=R*2+2,h=1.5);
+    }
 }
 
-//cylinder_with_teeth(12,8,tooth_spacing,tooth_width);
+union() {
+    GT2_8mm(22);
+    translate([0,0,8])
+        GT2_8mm(10);
+}
 
-GT2_8mm(44);
-
-//linear(8);
+//linear(8, 44);
